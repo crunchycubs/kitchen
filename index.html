@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selamat Datang di CrunchyCubs Kitchen</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="Logo.jpg" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<body>
+  <!-- Landing Page -->
+  <div class="landing-container" id="landingContainer">
+    <div class="landing-content">
+      <img src="Logo.jpg" alt="CrunchyCubs Kitchen" class="landing-logo">
+      <button class="start-order-btn" onclick="startOrdering()">Mulai Pesan</button>
+    </div>
+  </div>
+
+  <!-- Main Content (tersembunyi awalnya) -->
+  <main class="content" id="mainContent" style="display: none;">
+    <div class="option-container" id="categorySelection">
+      <div class="option-box" onclick="selectCategory('asin')">
+        <i class="fas fa-burger"></i>
+        <h2>Makanan Asin</h2>
+        <p>Klik untuk melihat menu</p>
+      </div>
+      <div class="option-box" onclick="selectCategory('manis')">
+        <i class="fa-solid fa-cookie-bite"></i>
+        <h2>Makanan Manis</h2>
+        <p>Klik untuk melihat menu</p>
+      </div>
+    </div>
+
+    <img src="Menu.png" alt="Dekorasi" id="sideImage" class="side-image">
+
+    <!-- Tampilan Menu (awalnya hidden) -->
+    <div class="menu-container" id="menuSection" style="display: none;">
+      <div class="menu-header">
+        <button class="back-button" onclick="goBackToCategories()">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1 id="menuTitle"></h1>
+      </div>
+      <div class="menu-grid" id="menuItems"></div>
+    </div>
+  </main>
+
+  <!-- Modal Pesanan -->
+  <div class="order-modal" id="orderModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <h2 id="modalItemName"></h2>
+      <p class="modal-price" id="modalPrice"></p>
+      <!-- Info stok ditampilkan di sini -->
+      <p class="modal-stock" id="modalStock"></p>
+      <div class="quantity-control">
+        <button class="quantity-btn" onclick="adjustQuantity(-1)">-</button>
+        <input type="number" id="quantity" value="1" min="1">
+        <button class="quantity-btn" onclick="adjustQuantity(1)">+</button>
+      </div>
+      <button class="add-to-cart" onclick="addToCart()">Tambahkan ke Pesanan</button>
+    </div>
+  </div>
+
+  <!-- Total Harga -->
+  <div class="total-container" id="totalContainer" style="display: none;">
+    Total Pesanan: <span id="totalAmount">Rp 0</span>
+    <button class="checkout-btn" onclick="checkout()">Checkout Pesanan</button>
+  </div>
+
+  <!-- Checkout Section (disembunyikan secara default) -->
+  <div class="checkout-section" id="checkoutSection" style="display: none;">
+    <img src="checkout-banner.png" alt="Checkout Banner" class="checkout-banner">
+    <div class="checkout-header">
+      <button class="back-button" onclick="goBackFromCheckout()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <h1>Checkout</h1>
+    </div>
+    <div class="order-summary" id="orderSummary"></div>
+    <div class="checkout-total">
+      Total: <span id="checkoutTotal">Rp 0</span>
+    </div>
+    <!-- Tombol awal: Pilih Metode Pembayaran -->
+    <button class="confirm-checkout" id="paymentMethodBtn" onclick="showPaymentForm()">Pilih Metode Pembayaran</button>
+
+    <!-- Form pembayaran, tersembunyi secara default -->
+    <div id="paymentForm" style="display: none;">
+      <form id="paymentDetailsForm">
+        <!-- Container untuk pesan error -->
+        <div id="paymentErrors" style="color: red; margin-bottom: 10px;"></div>
+        
+        <label for="customerName">Nama:</label>
+        <input type="text" id="customerName" name="customerName" required>
+        
+        <label for="customerWhatsapp">Nomor Whatsapp:</label>
+        <input type="tel" id="customerWhatsapp" name="customerWhatsapp" required>
+        
+        <label for="customerAddress">Alamat: / Darimana?</label>
+        <textarea id="customerAddress" name="customerAddress" required></textarea>
+
+        <label for="orderDate">Untuk kapan?</label>
+        <input type="text" id="orderDate" name="orderDate" readonly required>
+        
+        <p>Pilih metode pembayaran:</p>
+        <label>
+          <input type="radio" name="paymentMethod" value="COD" checked onclick="toggleTransferFields()">
+          COD
+        </label>
+        <label>
+          <input type="radio" name="paymentMethod" value="Transfer" onclick="toggleTransferFields()">
+          Transfer
+        </label>
+
+        <!-- Field tambahan untuk metode Transfer -->
+        <div id="transferFields" style="display: none;">
+          <p>Nomor Rekening Seller: 1234567890</p>
+          <label for="proofUpload">Upload bukti transfer:</label>
+          <input type="file" id="proofUpload" name="proofUpload" accept="image/*">
+        </div>
+        
+        <button type="submit" class="confirm-checkout">Konfirmasi Pesanan</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
